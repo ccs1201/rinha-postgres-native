@@ -79,7 +79,7 @@
 								--no-fallback
 								--enable-preview
 								-H:+UnlockExperimentalVMOptions
-								-H:Optimize=3
+								-H:Optimize=2
 							</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
