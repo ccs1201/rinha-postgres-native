@@ -1,0 +1,47 @@
+ACTIVE_MONITOR=true
+VIRTUAL_THREADS=true
+payment-processor.default.url=http://localhost:8001
+payment-processor.fallback.url=http://localhost:8002
+QUEUE_IS_FAIR=true
+QUEUE_SIZE=4000
+REQUEST_CONNECTION_TIMEOUT=100
+REQUEST_READ_TIMEOUT=5000
+THREAD_POOL_SIZE=10
+VIRTUAL_THREADS=true
+server.port=9999
+SPRING_APPLICATION_JSON={"server.port":9999,
+"spring.application.name": "ccs1201-rinha-backend-2025",
+"spring.threads.virtual.enabled": false,
+"server.servlet.session.persistent": false,
+"server.servlet.session.tracking-modes": [],
+"server.servlet.session.timeout": 0,
+"logging.level.root": "info",
+"spring.main.banner-mode": "off",
+"spring.jmx.enabled": false,
+"spring.application.admin.enabled": false,
+"spring.autoconfigure.exclude": "org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration,org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration,org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration",
+"server.servlet.context-parameters.contextClass": "org.springframework.web.context.support.AnnotationConfigWebApplicationContext",
+"spring.mvc.async.request-timeout": -1,
+"spring.mvc.dispatch-options-request": false,
+"spring.mvc.dispatch-trace-request": false,
+"spring.mvc.log-request-details": false,
+"spring.mvc.log-resolved-exception": false,
+"server.undertow.threads.io": 8,
+"server.undertow.threads.worker": 30,
+"server.undertow.buffer-size": 1024,
+"server.undertow.direct-buffers": true,
+"server.undertow.max-http-post-size": "1KB",
+"server.undertow.no-request-timeout": 2000,
+"server.undertow.options.server.record-request-start-time": false,
+"spring.datasource.url": "jdbc:postgresql://localhost:5432/rinha",
+"spring.datasource.username": "rinha",
+"spring.datasource.password": "rinha",
+"spring.datasource.hikari.maximum-pool-size": 10,
+"spring.datasource.hikari.minimum-idle": 10,
+"spring.datasource.hikari.connection-timeout": 5000,
+"spring.datasource.hikari.idle-timeout": 300000,
+"spring.datasource.hikari.max-lifetime": 600000,
+"spring.datasource.hikari.connection-init-sql": "SELECT 1 WHERE 1 = 1;",
+"logging.level.br.com.ccs.rinha": "info",
+"payment-processor.default.url": "http://localhost:8001",
+"payment-processor.fallback.url": "http://localhost:8002"}
