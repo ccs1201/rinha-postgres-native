@@ -13,7 +13,7 @@ x-backend-templates:
           memory: "100MB"
 
   app-env: &app-env
-    ACTIVE_MONITOR: "true"
+    ACTIVE_MONITOR: "false"
     SERVER_PORT: "8080"
     VIRTUAL_THREADS: "true"
     THREAD_POOL_SIZE: "10"
@@ -56,7 +56,13 @@ x-backend-templates:
         "logging.level.br.com.ccs.rinha": "info",
         "payment-processor.default.url": "http://payment-processor-default:8080",
         "payment-processor.fallback.url": "http://payment-processor-fallback:8080",
-        "spring.mvc.log-resolved-exception": false
+        "spring.mvc.log-resolved-exception": false,
+        "spring.r2dbc.url": "r2dbc:postgresql://localhost:54323/rinha",
+        "spring.r2dbc.username": "rinha"
+        "spring.r2dbc.password": "rinha"
+        "spring.r2dbc.pool.initial-size": 8
+        "spring.r2dbc.pool.max-size": 8
+        "spring.r2dbc.sql.init.mode": "always"
       }
 
 #####################################################

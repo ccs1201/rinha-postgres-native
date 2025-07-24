@@ -47,10 +47,10 @@ public class PaymentController {
 
     @PostMapping("/payments")
     public void createPayment(@RequestBody PaymentRequest paymentRequest) {
-        executor.submit(() -> {
+//        executor.submit(() -> {
         paymentRequest.requestedAt = OffsetDateTime.now(ZoneOffset.UTC);
         webClientPaymentProcessorClientService.processPayment(paymentRequest);
-        }, executor);
+//        }, executor);
 
     }
 

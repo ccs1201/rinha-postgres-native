@@ -45,7 +45,6 @@ public class R2dbcPaymentRepository {
                 .bind("$3", request.requestedAt)
                 .bind("$4", request.isDefault)
                 .then() // Mono<Void>
-                .doOnSuccess(v -> log.info("Saved payment: {}", request))
                 .doOnError(e -> log.error("Failed to save payment", e));
     }
 

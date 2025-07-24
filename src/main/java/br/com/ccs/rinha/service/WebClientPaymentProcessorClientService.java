@@ -64,7 +64,7 @@ public class WebClientPaymentProcessorClientService {
                 .toBodilessEntity()
                 .then(r2dbcPaymentRepository.save(request))
                 .doOnError(e -> {
-                    log.error("Default error", e);
+                    log.error("Default error msg: {}", e.getMessage());
                     postToFallback(request, retryCount);
                 })
                 .subscribe();
@@ -80,7 +80,7 @@ public class WebClientPaymentProcessorClientService {
                 .toBodilessEntity()
                 .then(r2dbcPaymentRepository.save(request))
                 .doOnError(e -> {
-                    log.error("Fallback error", e);
+                    log.error("Fallback error msg {}", e.getMessage());
                     executor.submit(() ->
                             postToDefault(request, retryCount + 1), executor);
                 })
