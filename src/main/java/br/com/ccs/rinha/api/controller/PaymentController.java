@@ -4,7 +4,9 @@ import br.com.ccs.rinha.api.model.input.PaymentRequest;
 import br.com.ccs.rinha.api.model.output.PaymentSummary;
 import br.com.ccs.rinha.monitor.ExecutorMonitor;
 import br.com.ccs.rinha.repository.JdbcPaymentRepository;
+import br.com.ccs.rinha.repository.R2dbcPaymentRepository;
 import br.com.ccs.rinha.service.PaymentProcessorClientService;
+import br.com.ccs.rinha.service.WebClientPaymentProcessorClientService;
 import jakarta.annotation.PreDestroy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,26 +23,33 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RestController
 public class PaymentController {
 
-    private final PaymentProcessorClientService client;
-    private final JdbcPaymentRepository repository;
+    //    private final PaymentProcessorClientService client;
+//    private final JdbcPaymentRepository repository;
     private final ExecutorService executor;
     private final ExecutorMonitor executorMonitor;
+    private final WebClientPaymentProcessorClientService webClientPaymentProcessorClientService;
+    private final R2dbcPaymentRepository r2dbcPaymentRepository;
 
-    public PaymentController(PaymentProcessorClientService client,
-                             JdbcPaymentRepository repository,
-                             ThreadPoolExecutor executor,
-                             ExecutorMonitor executorMonitor) {
-        this.client = client;
-        this.repository = repository;
+    public PaymentController(
+//            PaymentProcessorClientService client,
+//            JdbcPaymentRepository repository,
+            ThreadPoolExecutor executor,
+            ExecutorMonitor executorMonitor,
+            WebClientPaymentProcessorClientService webClientPaymentProcessorClientService,
+            R2dbcPaymentRepository r2dbcPaymentRepository) {
+//        this.client = client;
+//        this.repository = repository;
         this.executor = executor;
         this.executorMonitor = executorMonitor;
+        this.webClientPaymentProcessorClientService = webClientPaymentProcessorClientService;
+        this.r2dbcPaymentRepository = r2dbcPaymentRepository;
     }
 
     @PostMapping("/payments")
     public void createPayment(@RequestBody PaymentRequest paymentRequest) {
         executor.submit(() -> {
-            paymentRequest.requestedAt = OffsetDateTime.now(ZoneOffset.UTC);
-            client.processPayment(paymentRequest);
+        paymentRequest.requestedAt = OffsetDateTime.now(ZoneOffset.UTC);
+        webClientPaymentProcessorClientService.processPayment(paymentRequest);
         }, executor);
 
     }
@@ -49,12 +58,12 @@ public class PaymentController {
     public PaymentSummary getPaymentsSummary(@RequestParam(required = false) OffsetDateTime from,
                                              @RequestParam(required = false) OffsetDateTime to) {
 
-        return repository.getSummary(from, to);
+        return r2dbcPaymentRepository.getSummary(from, to).block();
     }
 
     @PostMapping("/purge-payments")
     public ResponseEntity<Void> purgePayments() {
-        repository.purge();
+        r2dbcPaymentRepository.purge();
         executorMonitor.startMonitoring();
         return ResponseEntity.ok().build();
     }

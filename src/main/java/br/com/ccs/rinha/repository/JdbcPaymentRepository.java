@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 
 import static java.util.Objects.isNull;
 
-@Repository
+//@Repository
 public class JdbcPaymentRepository {
 
     private static final Logger log = LoggerFactory.getLogger(JdbcPaymentRepository.class);
@@ -42,6 +42,8 @@ public class JdbcPaymentRepository {
     }
 
     public void save(PaymentRequest request) {
+
+        log.info("Saving payment: {}", request);
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SQL_INSERT)) {

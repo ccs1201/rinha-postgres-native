@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service
+//@Service
 public class PaymentProcessorClientService {
 
     private static final Logger log = LoggerFactory.getLogger(PaymentProcessorClientService.class);
