@@ -1,4 +1,4 @@
-package br.com.ccs.rinha.config;
+package br.com.ccs.rinha.monitor;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -31,11 +31,12 @@ public class ExecutorMonitor {
                 .name("Executor-Monitor")
                 .unstarted(() -> {
             long lastCompleted = executor.getCompletedTaskCount();
+            int poolSize = executor.getPoolSize();
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     int active = executor.getActiveCount();
-                    int poolSize = executor.getPoolSize();
+                    int onPool = poolSize - active;
                     int queueSize = executor.getQueue().size();
                     int remainingQueue = executor.getQueue().remainingCapacity();
                     long completed = executor.getCompletedTaskCount();
@@ -43,7 +44,7 @@ public class ExecutorMonitor {
                     lastCompleted = completed;
 
                     log.info("active: {}, pool: {}, queue: {}, remaining: {}, completed: {}, throughput: {} P/s",
-                            active, poolSize, queueSize, remainingQueue, completed, throughput);
+                            active, onPool, queueSize, remainingQueue, completed, throughput);
 
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -63,7 +64,7 @@ public class ExecutorMonitor {
     private void stop() {
         if (Objects.nonNull(thread) && thread.isAlive()) {
             thread.interrupt();
-            thread = null;
+            executor.purge();
         }
     }
 }

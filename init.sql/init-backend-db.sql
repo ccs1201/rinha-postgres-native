@@ -6,6 +6,6 @@ CREATE UNLOGGED TABLE IF NOT EXISTS payments
     is_default     BOOLEAN        NOT NULL
 );
 
-CREATE INDEX idx_payments_covering
+CREATE INDEX IF NOT EXISTS idx_payments_covering
     ON payments (requested_at)
     INCLUDE (is_default, amount);

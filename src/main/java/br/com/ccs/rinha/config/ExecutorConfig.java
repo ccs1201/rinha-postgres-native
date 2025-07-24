@@ -27,7 +27,7 @@ public class ExecutorConfig {
         log.info("Queue isFair: {}", queueIsFair);
         log.info("Using Virtual Threads: {}", virtual);
 
-        var poll = new ThreadPoolExecutor(
+        var executor = new ThreadPoolExecutor(
                 threadPoolSize,
                 threadPoolSize,
                 10, TimeUnit.SECONDS,
@@ -35,8 +35,10 @@ public class ExecutorConfig {
                 virtual ? Thread.ofVirtual().factory() : Thread.ofPlatform().factory(),
                 new ThreadPoolExecutor.DiscardPolicy());
 
-        log.info("Effective thread poll factory: {}", poll.getThreadFactory().getClass().getSimpleName());
-        return poll;
+        executor.prestartAllCoreThreads();
+        log.info("Effective thread poll factory: {}", executor.getThreadFactory().getClass().getSimpleName());
+        log.info("Executor is all threads started. {}", executor.prestartCoreThread());
+        return executor;
     }
 
 }

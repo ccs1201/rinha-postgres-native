@@ -1,6 +1,6 @@
 x-backend-templates:
   app: &app
-    image: csouzadocker/rinha-2025-redis-native:latest
+    image: csouzadocker/rinha-2025-postgres-native:latest
     depends_on:
       - backend-db
     networks:
@@ -10,7 +10,7 @@ x-backend-templates:
       resources:
         limits:
           cpus: "0.6"
-          memory: "117.50MB"
+          memory: "100MB"
 
   app-env: &app-env
     ACTIVE_MONITOR: "true"
@@ -47,9 +47,9 @@ x-backend-templates:
         "spring.datasource.url": "jdbc:postgresql://postgres:5432/rinha",
         "spring.datasource.username": "rinha",
         "spring.datasource.password": "rinha",
-        "spring.datasource.hikari.maximum-pool-size": 10,
-        "spring.datasource.hikari.minimum-idle": 10,
-        "spring.datasource.hikari.connection-timeout": 5000,
+        "spring.datasource.hikari.maximum-pool-size": 12,
+        "spring.datasource.hikari.minimum-idle": 12,
+        "spring.datasource.hikari.connection-timeout": 2000,
         "spring.datasource.hikari.idle-timeout": 300000,
         "spring.datasource.hikari.max-lifetime": 600000,
         "spring.datasource.hikari.connection-init-sql": "SELECT 1 WHERE 1 = 1;",
@@ -116,7 +116,7 @@ services:
       resources:
         limits:
           cpus: "0.2"
-          memory: "100MB"
+          memory: "135MB"
 
 networks:
   backend:

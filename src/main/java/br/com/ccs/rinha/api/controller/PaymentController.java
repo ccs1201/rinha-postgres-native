@@ -2,7 +2,7 @@ package br.com.ccs.rinha.api.controller;
 
 import br.com.ccs.rinha.api.model.input.PaymentRequest;
 import br.com.ccs.rinha.api.model.output.PaymentSummary;
-import br.com.ccs.rinha.config.ExecutorMonitor;
+import br.com.ccs.rinha.monitor.ExecutorMonitor;
 import br.com.ccs.rinha.repository.JdbcPaymentRepository;
 import br.com.ccs.rinha.service.PaymentProcessorClientService;
 import jakarta.annotation.PreDestroy;
