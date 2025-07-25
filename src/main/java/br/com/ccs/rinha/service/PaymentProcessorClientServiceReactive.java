@@ -42,7 +42,7 @@ public class PaymentProcessorClientServiceReactive {
         this.queue = new ArrayBlockingQueue<>(10000, false);
         this.retries = Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_MAX_RETRIES"));
         this.timeOut = Duration.ofMillis(Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_REQUEST_TIMEOUT")));
-        var workers= Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_WORKERS"));
+        var workers = Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_WORKERS"));
 
         for (int i = 0; i < workers; i++) {
             startProcessQueue(i);
@@ -85,7 +85,7 @@ public class PaymentProcessorClientServiceReactive {
                     if (Boolean.TRUE.equals(success)) {
                         saveAsync(paymentRequest);
                     } else {
-//                        log.warn("Request failed after {} retries: {}", retries, paymentRequest.correlationId);
+                        queue.offer(paymentRequest);
                     }
                 }, error -> {
                     log.error("Unexpected error on process payment", error);

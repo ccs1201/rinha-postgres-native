@@ -25,11 +25,11 @@ public class PaymentController {
     private final JdbcPaymentRepository repository;
     private final ExecutorService executor;
 
-    public PaymentController(PaymentProcessorClientServiceBlocking clientServiceBlocking,
+    public PaymentController(PaymentProcessorClientServiceBlocking client,
                              JdbcPaymentRepository repository,
                              ThreadPoolExecutor executor) {
 
-        this.client = clientServiceBlocking;
+        this.client = client;
         this.repository = repository;
         this.executor = executor;
     }
