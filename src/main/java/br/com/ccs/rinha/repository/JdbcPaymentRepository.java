@@ -95,9 +95,6 @@ public class JdbcPaymentRepository {
                         stmt.executeUpdate();
                         conn.commit();
 
-                        long elapsed = Instant.now().toEpochMilli() - pr.receivedAt.toInstant().toEpochMilli();
-                        log.info("Payment processed in {}ms queue size {}", elapsed, queue.size());
-
                     } catch (Exception e) {
                         log.error("Error inserting payment", e);
                     }
@@ -109,10 +106,8 @@ public class JdbcPaymentRepository {
         log.info("repository-worker-{} started", workerIndex);
     }
 
-
     public void saveAsync(PaymentRequest paymentRequest) {
         queue.offer(paymentRequest);
-
     }
 
     public PaymentSummary getSummary(OffsetDateTime from, OffsetDateTime to) {
@@ -159,10 +154,6 @@ public class JdbcPaymentRepository {
             throw new RuntimeException(e);
         }
     }
-
-//    public void addToBatchInsert(PaymentRequest paymentRequest) {
-//        batchInsert.add(paymentRequest);
-//    }
 
     private class BatchInsert {
         private final Connection connection;

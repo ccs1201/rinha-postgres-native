@@ -16,14 +16,16 @@ x-backend-templates:
           memory: "100MB"
 
   app-env: &app-env
-    ACTIVE_MONITOR: "false"
+    ACTIVE_MONITOR: "true"
     SERVER_PORT: "8080"
     VIRTUAL_THREADS: "true"
     THREAD_POOL_SIZE: "10"
-    QUEUE_SIZE: "5000"
+    QUEUE_SIZE: "500"
     QUEUE_IS_FAIR: "true"
-    REQUEST_CONNECTION_TIMEOUT: "10000"
-    REQUEST_READ_TIMEOUT: "10000"
+    WEBCLIENT_MAX_CONNECTION: "200"
+    PAYMENT_PROCESSOR_MAX_RETRIES: "5"
+    PAYMENT_PROCESSOR_REQUEST_TIMEOUT: "10000"
+    PAYMENT_PROCESSOR_WORKERS: "1"
     payment-processor.default.url: "http://payment-processor-default:8080"
     payment-processor.fallback.url: "http://payment-processor-fallback:8080"
     SPRING_APPLICATION_JSON: >
@@ -50,20 +52,19 @@ x-backend-templates:
         "spring.datasource.url": "jdbc:postgresql://postgres:5432/rinha",
         "spring.datasource.username": "rinha",
         "spring.datasource.password": "rinha",
-        "spring.datasource.hikari.maximum-pool-size": 10,
-        "spring.datasource.hikari.minimum-idle": 10,
+        "spring.datasource.hikari.maximum-pool-size": 4,
+        "spring.datasource.hikari.minimum-idle": 4,
         "spring.datasource.hikari.connection-timeout": 2000,
         "spring.datasource.hikari.idle-timeout": 300000,
         "spring.datasource.hikari.max-lifetime": 600000,
         "spring.datasource.hikari.connection-init-sql": "SELECT 1 WHERE 1 = 1;",
-        "logging.level.br.com.ccs.rinha": "info",
         "payment-processor.default.url": "http://payment-processor-default:8080",
         "payment-processor.fallback.url": "http://payment-processor-fallback:8080",
-        "spring.mvc.log-resolved-exception": false
+        "spring.mvc.log-resolved-exception": false,
+        "logging.level.br.com.ccs.rinha": "info"
       }
 
 #####################################################################################
-
 
 services:
   backend-db:
@@ -91,8 +92,7 @@ services:
       resources:
         limits:
           cpus: "0.2"
-          memory: "135MB"
-
+          memory: "125MB"
 
   app1:
     <<: *app
@@ -126,8 +126,7 @@ services:
       resources:
         limits:
           cpus: "0.1"
-          memory: "15MB"
-
+          memory: "25MB"
 
 networks:
   backend:

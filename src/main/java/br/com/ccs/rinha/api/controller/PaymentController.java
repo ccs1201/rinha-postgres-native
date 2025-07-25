@@ -2,9 +2,8 @@ package br.com.ccs.rinha.api.controller;
 
 import br.com.ccs.rinha.api.model.input.PaymentRequest;
 import br.com.ccs.rinha.api.model.output.PaymentSummary;
-import br.com.ccs.rinha.monitor.ExecutorMonitor;
 import br.com.ccs.rinha.repository.JdbcPaymentRepository;
-import br.com.ccs.rinha.service.PaymentProcessorClientService;
+import br.com.ccs.rinha.service.PaymentProcessorClientServiceBlocking;
 import jakarta.annotation.PreDestroy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,19 +21,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RestController
 public class PaymentController {
 
-    private final PaymentProcessorClientService client;
+    private final PaymentProcessorClientServiceBlocking client;
     private final JdbcPaymentRepository repository;
     private final ExecutorService executor;
-    private final ExecutorMonitor executorMonitor;
 
-    public PaymentController(PaymentProcessorClientService client,
+    public PaymentController(PaymentProcessorClientServiceBlocking clientServiceBlocking,
                              JdbcPaymentRepository repository,
-                             ThreadPoolExecutor executor,
-                             ExecutorMonitor executorMonitor) {
-        this.client = client;
+                             ThreadPoolExecutor executor) {
+
+        this.client = clientServiceBlocking;
         this.repository = repository;
         this.executor = executor;
-        this.executorMonitor = executorMonitor;
     }
 
     @PostMapping("/payments")
@@ -55,7 +52,6 @@ public class PaymentController {
     @PostMapping("/purge-payments")
     public ResponseEntity<Void> purgePayments() {
         repository.purge();
-        executorMonitor.startMonitoring();
         return ResponseEntity.ok().build();
     }
 
