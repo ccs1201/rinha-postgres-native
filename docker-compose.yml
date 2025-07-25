@@ -51,8 +51,8 @@ x-backend-templates:
         "spring.datasource.url": "jdbc:postgresql://postgres:5432/rinha",
         "spring.datasource.username": "rinha",
         "spring.datasource.password": "rinha",
-        "spring.datasource.hikari.maximum-pool-size": 2,
-        "spring.datasource.hikari.minimum-idle": 2,
+        "spring.datasource.hikari.maximum-pool-size": 3,
+        "spring.datasource.hikari.minimum-idle": 3,
         "spring.datasource.hikari.connection-timeout": 2000,
         "spring.datasource.hikari.idle-timeout": 300000,
         "spring.datasource.hikari.max-lifetime": 600000,
@@ -125,8 +125,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"
-          memory: "25MB"
+          cpus: "4"
+          memory: "250MB"
 
 networks:
   backend:
