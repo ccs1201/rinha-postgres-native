@@ -3,7 +3,7 @@ package br.com.ccs.rinha.api.controller;
 import br.com.ccs.rinha.api.model.input.PaymentRequest;
 import br.com.ccs.rinha.api.model.output.PaymentSummary;
 import br.com.ccs.rinha.repository.JdbcPaymentRepository;
-import br.com.ccs.rinha.service.PaymentProcessorClientServiceReactive;
+import br.com.ccs.rinha.service.PaymentProcessorClientServiceBlocking;
 import jakarta.annotation.PreDestroy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +21,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RestController
 public class PaymentController {
 
-    private final PaymentProcessorClientServiceReactive client;
+    private final PaymentProcessorClientServiceBlocking client;
     private final JdbcPaymentRepository repository;
     private final ExecutorService executor;
 
-    public PaymentController(PaymentProcessorClientServiceReactive client,
+    public PaymentController(PaymentProcessorClientServiceBlocking client,
                              JdbcPaymentRepository repository,
                              ThreadPoolExecutor executor) {
 
