@@ -35,7 +35,6 @@ x-backend-templates:
         "spring.threads.virtual.enabled": false,
         "server.servlet.session.persistent": false,
         "server.servlet.session.timeout": 0,
-        "logging.level.root": "info",
         "spring.main.banner-mode": "off",
         "spring.jmx.enabled": false,
         "spring.application.admin.enabled": false,
@@ -52,8 +51,8 @@ x-backend-templates:
         "spring.datasource.url": "jdbc:postgresql://postgres:5432/rinha",
         "spring.datasource.username": "rinha",
         "spring.datasource.password": "rinha",
-        "spring.datasource.hikari.maximum-pool-size": 4,
-        "spring.datasource.hikari.minimum-idle": 4,
+        "spring.datasource.hikari.maximum-pool-size": 2,
+        "spring.datasource.hikari.minimum-idle": 2,
         "spring.datasource.hikari.connection-timeout": 2000,
         "spring.datasource.hikari.idle-timeout": 300000,
         "spring.datasource.hikari.max-lifetime": 600000,
@@ -61,6 +60,7 @@ x-backend-templates:
         "payment-processor.default.url": "http://payment-processor-default:8080",
         "payment-processor.fallback.url": "http://payment-processor-fallback:8080",
         "spring.mvc.log-resolved-exception": false,
+        "logging.level.root": "info",
         "logging.level.br.com.ccs.rinha": "info"
       }
 

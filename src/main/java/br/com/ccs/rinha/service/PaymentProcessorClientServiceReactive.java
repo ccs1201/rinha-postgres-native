@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +16,7 @@ import java.time.ZoneOffset;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//@Service
+@Service
 public class PaymentProcessorClientServiceReactive {
 
     private static final Logger log = LoggerFactory.getLogger(PaymentProcessorClientServiceReactive.class);
@@ -42,7 +43,7 @@ public class PaymentProcessorClientServiceReactive {
         this.queue = new ArrayBlockingQueue<>(10000, false);
         this.retries = Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_MAX_RETRIES"));
         this.timeOut = Duration.ofMillis(Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_REQUEST_TIMEOUT")));
-        var workers= Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_WORKERS"));
+        var workers = Integer.parseInt(System.getenv("PAYMENT_PROCESSOR_WORKERS"));
 
         for (int i = 0; i < workers; i++) {
             startProcessQueue(i);
@@ -85,7 +86,7 @@ public class PaymentProcessorClientServiceReactive {
                     if (Boolean.TRUE.equals(success)) {
                         saveAsync(paymentRequest);
                     } else {
-//                        log.warn("Request failed after {} retries: {}", retries, paymentRequest.correlationId);
+                        queue.offer(paymentRequest);
                     }
                 }, error -> {
                     log.error("Unexpected error on process payment", error);
