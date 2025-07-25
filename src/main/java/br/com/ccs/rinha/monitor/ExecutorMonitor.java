@@ -3,12 +3,14 @@ package br.com.ccs.rinha.monitor;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Component
+@ConditionalOnProperty(name = "ACTIVE_MONITOR", havingValue = "true", matchIfMissing = false)
 public class ExecutorMonitor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecutorMonitor.class);
@@ -43,7 +45,7 @@ public class ExecutorMonitor {
                     long throughput = completed - lastCompleted;
                     lastCompleted = completed;
 
-                    log.info("active: {}, pool: {}, queue: {}, remaining: {}, completed: {}, throughput: {} P/s",
+                    log.info("active: {}, pool: {}, queue: {}, remaining: {}, completed: {}, throughput: {} Reqs/s",
                             active, onPool, queueSize, remainingQueue, completed, throughput);
 
                     Thread.sleep(1000);
