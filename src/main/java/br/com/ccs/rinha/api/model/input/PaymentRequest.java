@@ -12,6 +12,7 @@ public final class PaymentRequest {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     public OffsetDateTime requestedAt;
     public boolean isDefault;
+    public OffsetDateTime receivedAt;
 
     public void setDefaultFalse() {
         this.isDefault = false;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -39,17 +40,16 @@ public class PaymentController {
     @PostMapping("/payments")
     public void createPayment(@RequestBody PaymentRequest paymentRequest) {
         executor.submit(() -> {
-            paymentRequest.requestedAt = OffsetDateTime.now(ZoneOffset.UTC);
+            paymentRequest.receivedAt = OffsetDateTime.now(ZoneOffset.UTC);
             client.processPayment(paymentRequest);
         }, executor);
-
     }
 
     @GetMapping("/payments-summary")
     public PaymentSummary getPaymentsSummary(@RequestParam(required = false) OffsetDateTime from,
                                              @RequestParam(required = false) OffsetDateTime to) {
 
-        return repository.getSummary(from, to);
+        return CompletableFuture.supplyAsync(() -> repository.getSummary(from, to), executor).join();
     }
 
     @PostMapping("/purge-payments")
